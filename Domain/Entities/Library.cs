@@ -4,12 +4,11 @@
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public int BlockId { get; set; }
-
-        public virtual Block Block { get; set; } = null!;
+        
+        public int UniversityId { get; set; }
+        public University? University { get; set; }
 
         public ICollection<Block>? Blocks = new List<Block>();
 
-        public virtual University University { get; set; } = null!;
     }
 }

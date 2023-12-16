@@ -1,0 +1,40 @@
+﻿@model IEnumerable<Domain.Entities.User>
+
+@{
+    ViewData["Title"] = "Users";
+    Layout = "_Layout";
+}
+
+}
+
+    <div id="create-new" style="float:left">
+        <a asp-action="Create" class="btn btn-primary">Create New</a>
+    </div>
+
+
+<table class="sortable table table-hover">
+    <thead class="bg-light sticky-top top-0">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+    
+        </tr>
+    </thead>
+    <tbody id="IndexTBody">
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,11 +1,14 @@
+using Microsoft.DotNet.Scaffolding.Shared.ProjectModel;
 using Microsoft.EntityFrameworkCore;
 using Persistance.Context;
+using Persistance.RepositoriesImpl;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-builder.Services.AddDbContext<PingPongDbContext>(options =>
+builder.Services.AddScoped<UniversitiesRepository>();
+builder.Services.AddDbContext<LRTSContext>(options =>
 options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 var app = builder.Build();
@@ -28,6 +31,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Universities}/{action=Index}/{id?}");
 
 app.Run();

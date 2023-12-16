@@ -14,17 +14,17 @@ namespace Domain.Entities
         public int UniId { get; set; }
 
         public float PenaltyScore { get; set; }
-        public virtual University University { get; set; } = null!;
+        public University University { get; set; }
+        public Reservation Reservation { get; set; }
 
         public bool HasAccess { get; set; }
         public UserType UserType { get; set; }
 
-        public StudentUser(string name, float penaltyScore, int unId, University university, bool hasAccess)
+        public StudentUser(string name, float penaltyScore, int unId, bool hasAccess)
         {
             Name = name;
             PenaltyScore = penaltyScore;
             UniId = unId;
-            University = university;
             HasAccess = hasAccess;
             UserType = UserType.STUDENT;
 

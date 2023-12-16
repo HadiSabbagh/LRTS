@@ -14,5 +14,8 @@
             DeskId = deskId;
             DateTime = dateTime;
         }
+
+        public ICollection<User> Users { get; set; } = new List<User>();
+        public ICollection<Desk> Desks { get; set; } = new List<Desk>();
     }
 }

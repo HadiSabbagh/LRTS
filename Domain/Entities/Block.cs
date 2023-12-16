@@ -3,11 +3,10 @@
     public class Block : IEntity
     {
         public int Id { get; set; }
-        public string FloodId { get; set; }
-        public virtual Floor Floor { get; set; } = null!;
+        public int LibraryId { get; set; }
+        public Library? Library { get; set; }
 
-        public List<Floor>? Floors { get; set; }
-
+        public ICollection<Floor>? Floors { get; set; } = new List<Floor>();
 
     }
 }

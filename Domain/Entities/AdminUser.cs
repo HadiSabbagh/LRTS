@@ -14,20 +14,21 @@ namespace Domain.Entities
 
         public int UniId { get; set; }
 
-        public virtual University University { get; set; } = null!;
+        public University University { get; set; }
+
+        public Reservation Reservation { get; set; }
 
         public bool HasAccess { get; set; }
         public UserType UserType { get; set; }
-      
 
-        public AdminUser(string name, int unId, University university, bool hasAccess)
+
+        public AdminUser(string name, int unId, bool hasAccess)
         {
             Name = name;
             UniId = unId;
-            University = university;
             HasAccess = hasAccess;
             UserType = UserType.ADMIN;
-            
+
         }
 
 
@@ -45,17 +46,17 @@ namespace Domain.Entities
             throw new NotImplementedException();
         }
 
-        public Reservation reserveDesk(int deskId,DateTime dateTime) 
+        public Reservation reserveDesk(int deskId, DateTime dateTime)
         {
             throw new NotImplementedException();
         }
 
-        public void cancelReservation(Reservation reservation) 
+        public void cancelReservation(Reservation reservation)
         {
             throw new NotImplementedException();
         }
 
-        public void removeAccess(User user) 
+        public void removeAccess(User user)
         {
             user.HasAccess = false;
         }

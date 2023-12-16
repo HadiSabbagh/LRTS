@@ -12,7 +12,7 @@ namespace BenchWeb.Repositories
         private readonly TDbContext _dbContext;
         public CoreRepository(TDbContext context)
         {
-            this._dbContext = context;
+            _dbContext = context;
         }
 
         public async Task<List<TEntity>> GetAll()

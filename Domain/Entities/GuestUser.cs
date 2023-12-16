@@ -6,23 +6,24 @@ using System.Threading.Tasks;
 
 namespace Domain.Entities
 {
-    public class GusetUser : User
+    public class GuestUser : User
     {
         public int Id { get; set; }
         public string Name { get; set; }
 
         public int UniId { get; set; }
 
-        public virtual University University { get; set; } = null!;
+        public  University University { get; set; }
+
+        public Reservation Reservation { get; set; }
 
         public bool HasAccess { get; set; }
         public UserType UserType { get; set; }
 
-        public GusetUser(string name, int unId, University university, bool hasAccess)
+        public GuestUser(string name, int unId, bool hasAccess)
         {
             Name = name;
             UniId = unId;
-            University = university;
             HasAccess = hasAccess;
             UserType = UserType.STUDENT;
 
@@ -31,6 +32,7 @@ namespace Domain.Entities
 
         public Reservation reserveDesk(int deskId, DateTime dateTime)
         {
+            
             throw new NotImplementedException();
         }
 
