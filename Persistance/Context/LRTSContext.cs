@@ -24,8 +24,6 @@ namespace Persistance.Context
         public virtual DbSet<Block> Blocks { get; set; }
         public virtual DbSet<Floor> Floors { get; set; }
         public virtual DbSet<Desk> Desks { get; set; }
-        public virtual DbSet<SingleDesk> SingleDesks { get; set; }
-        public virtual DbSet<GroupDesk> GroupDesks { get; set; }
         public virtual DbSet<Scanner> Scanners { get; set; }
         public virtual DbSet<Reservation> Reservations { get; set; }
 
@@ -48,6 +46,14 @@ namespace Persistance.Context
                 entity.Property(user => user.UserType).HasConversion(
                     ut => ut.ToString(),
                     ut => (UserType)Enum.Parse(typeof(UserType), ut));
+
+                entity.Property(user => user.CurrentUserStatus).HasConversion(
+                   cus => cus.ToString(),
+                   cus => (UserStatus)Enum.Parse(typeof(UserStatus), cus));
+
+                entity.Property(user => user.PreviousUserStatus).HasConversion(
+                   pus => pus.ToString(),
+                   pus => (UserStatus)Enum.Parse(typeof(UserStatus), pus));
             });
 
             modelBuilder.Entity<University>(entity =>
@@ -76,7 +82,7 @@ namespace Persistance.Context
             modelBuilder.Entity<Floor>(entity =>
             {
                 entity.Property(floor => floor.Id).ValueGeneratedOnAdd();
-                entity.HasMany(floor => floor.Desks).WithOne(desk => desk.Floor).HasConstraintName("lnk_Floor_Desk");
+             //   entity.HasMany(floor => floor.Desks).WithOne(desk => desk.Floor).HasConstraintName("lnk_Floor_Desk");
 
             });
 
@@ -93,8 +99,11 @@ namespace Persistance.Context
             modelBuilder.Entity<Reservation>(entity =>
             {
                 entity.Property(reservation => reservation.Id).ValueGeneratedOnAdd();
-                entity.HasMany(reservation => reservation.Users).WithOne(users => users.Reservation).HasConstraintName("lnk_Reservation_User");
 
+                entity.HasMany(reservation => reservation.Users).WithOne(users => users.Reservation).HasConstraintName("lnk_Reservation_User");
+                entity.Property(reservation => reservation.ReservationStatus).HasConversion(
+                  rs => rs.ToString(),
+                  rs => (ReservationStatus)Enum.Parse(typeof(ReservationStatus), rs));
             });
         }
     }

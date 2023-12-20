@@ -58,10 +58,6 @@ namespace Persistance.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("Discriminator")
-                        .IsRequired()
-                        .HasColumnType("text");
-
                     b.Property<int>("FloorId")
                         .HasColumnType("integer");
 
@@ -82,10 +78,6 @@ namespace Persistance.Migrations
                     b.HasIndex("UniversityId");
 
                     b.ToTable("Desks");
-
-                    b.HasDiscriminator<string>("Discriminator").HasValue("Desk");
-
-                    b.UseTphMappingStrategy();
                 });
 
             modelBuilder.Entity("Domain.Entities.Floor", b =>
@@ -136,11 +128,27 @@ namespace Persistance.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("DateTime")
-                        .HasColumnType("timestamp with time zone");
-
                     b.Property<int>("DeskId")
                         .HasColumnType("integer");
+
+                    b.Property<DateTime?>("EndBreak")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<DateTime>("EndDateTime")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<int>("RemainingBreakTimeInMinutes")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("ReservationStatus")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("StartBreak")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<DateTime>("StartDateTime")
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<int>("UserId")
                         .HasColumnType("integer");
@@ -188,8 +196,9 @@ namespace Persistance.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("GroupDeskId")
-                        .HasColumnType("integer");
+                    b.Property<string>("CurrentUserStatus")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<bool>("HasAccess")
                         .HasColumnType("boolean");
@@ -198,13 +207,17 @@ namespace Persistance.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<float>("PenaltyScore")
+                        .HasColumnType("real");
+
+                    b.Property<string>("PreviousUserStatus")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<int?>("ReservationId")
                         .HasColumnType("integer");
 
-                    b.Property<int>("UniId")
-                        .HasColumnType("integer");
-
-                    b.Property<int?>("UniversityId")
+                    b.Property<int>("UniversityId")
                         .HasColumnType("integer");
 
                     b.Property<string>("UserType")
@@ -213,30 +226,11 @@ namespace Persistance.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("GroupDeskId");
-
                     b.HasIndex("ReservationId");
 
                     b.HasIndex("UniversityId");
 
                     b.ToTable("Users");
-                });
-
-            modelBuilder.Entity("Domain.Entities.GroupDesk", b =>
-                {
-                    b.HasBaseType("Domain.Entities.Desk");
-
-                    b.HasDiscriminator().HasValue("GroupDesk");
-                });
-
-            modelBuilder.Entity("Domain.Entities.SingleDesk", b =>
-                {
-                    b.HasBaseType("Domain.Entities.Desk");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("integer");
-
-                    b.HasDiscriminator().HasValue("SingleDesk");
                 });
 
             modelBuilder.Entity("Domain.Entities.Block", b =>
@@ -260,11 +254,10 @@ namespace Persistance.Migrations
                         .IsRequired();
 
                     b.HasOne("Domain.Entities.Floor", "Floor")
-                        .WithMany("Desks")
+                        .WithMany()
                         .HasForeignKey("FloorId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("lnk_Floor_Desk");
+                        .IsRequired();
 
                     b.HasOne("Domain.Entities.Reservation", null)
                         .WithMany("Desks")
@@ -309,10 +302,6 @@ namespace Persistance.Migrations
 
             modelBuilder.Entity("Domain.Entities.User", b =>
                 {
-                    b.HasOne("Domain.Entities.GroupDesk", null)
-                        .WithMany("Users")
-                        .HasForeignKey("GroupDeskId");
-
                     b.HasOne("Domain.Entities.Reservation", "Reservation")
                         .WithMany("Users")
                         .HasForeignKey("ReservationId")
@@ -321,6 +310,8 @@ namespace Persistance.Migrations
                     b.HasOne("Domain.Entities.University", "University")
                         .WithMany("Users")
                         .HasForeignKey("UniversityId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
                         .HasConstraintName("lnk_User_University");
 
                     b.Navigation("Reservation");
@@ -331,11 +322,6 @@ namespace Persistance.Migrations
             modelBuilder.Entity("Domain.Entities.Block", b =>
                 {
                     b.Navigation("Floors");
-                });
-
-            modelBuilder.Entity("Domain.Entities.Floor", b =>
-                {
-                    b.Navigation("Desks");
                 });
 
             modelBuilder.Entity("Domain.Entities.Library", b =>
@@ -354,11 +340,6 @@ namespace Persistance.Migrations
                 {
                     b.Navigation("Libraries");
 
-                    b.Navigation("Users");
-                });
-
-            modelBuilder.Entity("Domain.Entities.GroupDesk", b =>
-                {
                     b.Navigation("Users");
                 });
 #pragma warning restore 612, 618

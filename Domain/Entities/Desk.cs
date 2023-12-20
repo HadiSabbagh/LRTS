@@ -1,9 +1,12 @@
-﻿namespace Domain.Entities
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Domain.Entities
 {
     public class Desk : IEntity
     {
         public int Id { get; set; }
-     
+
+        [EnumDataType(typeof(DeskStatus))]
         public DeskStatus DeskStatus { get; set; }
 
         public int DeskCapacity { get; set; }

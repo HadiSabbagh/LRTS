@@ -12,6 +12,6 @@ namespace Domain.Entities
         [Range(2, 6)]
         public new int DeskCapacity { get; set; }
 
-        public required ICollection<User> Users { get; set; }
+        public required List<User> Users  = new List<User>();
     }
 }

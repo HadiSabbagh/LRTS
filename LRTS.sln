@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.7.34031.279
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LRTS", "LRTS\LRTS.csproj", "{6D1C51DA-8CEC-40C4-9331-5E753C435427}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LRTS", "LRTS\LRTS.csproj", "{6D1C51DA-8CEC-40C4-9331-5E753C435427}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{9C4CEF1D-CEF3-4201-9065-2B46D12FBCB5}"
 EndProject
@@ -13,11 +13,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentatio
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Web", "Web", "{CEF6DF30-305E-43F5-99AC-56D16487AC61}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "Domain\Domain.csproj", "{78BF4BF1-0309-4D2B-A587-2E87E261C9AD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain", "Domain\Domain.csproj", "{78BF4BF1-0309-4D2B-A587-2E87E261C9AD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application", "Application\Application.csproj", "{287D0352-5F22-4449-9114-378CE5F575DA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application", "Application\Application.csproj", "{287D0352-5F22-4449-9114-378CE5F575DA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Persistance", "Persistance\Persistance.csproj", "{D4DB03A5-30B9-4C7D-994A-C9E2A13CD65F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Persistance", "Persistance\Persistance.csproj", "{D4DB03A5-30B9-4C7D-994A-C9E2A13CD65F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -2,12 +2,20 @@ using Microsoft.DotNet.Scaffolding.Shared.ProjectModel;
 using Microsoft.EntityFrameworkCore;
 using Persistance.Context;
 using Persistance.RepositoriesImpl;
+using Persistance.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+
 builder.Services.AddScoped<UniversitiesRepository>();
+builder.Services.AddScoped<LibrariesRepository>();
+builder.Services.AddScoped<UsersRepository>();
+builder.Services.AddScoped<ReservationManager>();
+builder.Services.AddScoped<ScannerManager>();
+builder.Services.AddCors();
 builder.Services.AddDbContext<LRTSContext>(options =>
 options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
