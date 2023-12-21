@@ -14,7 +14,7 @@ namespace LRTS.Controllers
             _scanner = scanner;
         }
 
-        [HttpGet]
+        [HttpPost]
         public async Task<IActionResult> CardScanned(int userId)
         {
 
