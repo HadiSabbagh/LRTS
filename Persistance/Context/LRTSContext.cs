@@ -17,6 +17,10 @@ namespace Persistance.Context
         {
             _configuration = configuration;
         }
+        public LRTSContext()
+        {
+            
+        }
 
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<University> Universities { get; set; }

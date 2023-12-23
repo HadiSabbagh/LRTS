@@ -10,12 +10,18 @@ namespace LRTS.Controllers
         where TRepository : IRepository<TEntity>
     {
         private readonly TRepository _repository;
-        
+
 
         public GenericController(TRepository repository)
         {
             _repository = repository;
-            
+
+        }
+
+        public async Task<ActionResult<List<TEntity>>> GetEntityAsList()
+        {
+            var list = await _repository.GetAll();
+            return Json(list);
         }
 
 
@@ -31,7 +37,7 @@ namespace LRTS.Controllers
             }
             catch (InvalidOperationException e)
             {
-//                _toastNotification.AddInfoToastMessage(e.Message);
+                //                _toastNotification.AddInfoToastMessage(e.Message);
                 return View();
             }
         }
@@ -49,7 +55,7 @@ namespace LRTS.Controllers
             try
             {
                 await _repository.Create(entity);
-              //  _toastNotification.AddSuccessToastMessage("Success!");
+                //  _toastNotification.AddSuccessToastMessage("Success!");
                 return RedirectToAction(nameof(Index));
 
             }
@@ -73,7 +79,7 @@ namespace LRTS.Controllers
                 var entity = await _repository.FindById(id);
                 if (entity == null)
                 {
-                   // _toastNotification.AddErrorToastMessage("Not found!");
+                    // _toastNotification.AddErrorToastMessage("Not found!");
                     return NotFound();
                 }
                 return View(entity);
@@ -90,7 +96,7 @@ namespace LRTS.Controllers
             try
             {
                 await _repository.Update(entity);
-               // _toastNotification.AddSuccessToastMessage("Updated successfully.");
+                // _toastNotification.AddSuccessToastMessage("Updated successfully.");
                 return RedirectToAction(nameof(Index));
             }
             catch (DbUpdateException e)
@@ -110,7 +116,7 @@ namespace LRTS.Controllers
             //if Found, return
             if (id == null)
             {
-               // _toastNotification.AddErrorToastMessage("No id was supplied. Make sure you are sending an id.");
+                // _toastNotification.AddErrorToastMessage("No id was supplied. Make sure you are sending an id.");
                 return View(nameof(Index));
             }
             else
@@ -118,7 +124,7 @@ namespace LRTS.Controllers
                 var found = await _repository.FindById(id);
                 if (found == null)
                 {
-                  //  _toastNotification.AddErrorToastMessage("Entry with Id does not exist.");
+                    //  _toastNotification.AddErrorToastMessage("Entry with Id does not exist.");
                     return NotFound();
                 }
                 return View(found);
@@ -130,13 +136,13 @@ namespace LRTS.Controllers
         {
             if (id == null || _repository.GetAll() == null)
             {
-              //  _toastNotification.AddErrorToastMessage("No id was supplied. Make sure you are sending an id.");
+                //  _toastNotification.AddErrorToastMessage("No id was supplied. Make sure you are sending an id.");
                 return View(nameof(Index));
             }
             var entity = await _repository.FindById(id);
             if (entity == null)
             {
-              // _toastNotification.AddErrorToastMessage("Entry with Id does not exist.");
+                // _toastNotification.AddErrorToastMessage("Entry with Id does not exist.");
                 return NotFound();
             }
             return View(entity);
@@ -154,12 +160,12 @@ namespace LRTS.Controllers
             if (entity != null)
             {
                 await _repository.Delete(entity.Id);
-               // _toastNotification.AddSuccessToastMessage("Deleted successfully.");
+                // _toastNotification.AddSuccessToastMessage("Deleted successfully.");
 
             }
             else
             {
-              //  _toastNotification.AddErrorToastMessage("Entry with Id does not exist.");
+                //  _toastNotification.AddErrorToastMessage("Entry with Id does not exist.");
 
             }
             return RedirectToAction(nameof(Index));

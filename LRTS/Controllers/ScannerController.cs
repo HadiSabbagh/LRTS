@@ -14,24 +14,24 @@ namespace LRTS.Controllers
             _scanner = scanner;
         }
 
-        [HttpGet]
+        [HttpPost]
         public async Task<IActionResult> CardScanned(int userId)
         {
 
             User user = await _scanner.getUserInformation(userId);
             if (user == null)
             {
-                return NotFound();
+                return NotFound("User was not found");
             }
             
             
             Reservation reservation = await _reservationManager.getReservationByUserId(userId);
             if(reservation == null)
             {
-                return NotFound(Json(user, "Does not have an active or in progress reservation"));
+                return NotFound("No active reservation was found.");
             }
             ReservationStatus rStatus = await _reservationManager.updateReservation(reservation);
-            return Json(rStatus.ToString());
+            return Ok(rStatus.ToString());
         }
 
     }
