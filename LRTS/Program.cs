@@ -12,6 +12,7 @@ AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
 builder.Services.AddScoped<UniversitiesRepository>();
 builder.Services.AddScoped<LibrariesRepository>();
+builder.Services.AddScoped<DesksRepository>();
 builder.Services.AddScoped<UsersRepository>();
 builder.Services.AddScoped<ReservationManager>();
 builder.Services.AddScoped<ScannerManager>();
@@ -36,9 +37,9 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthorization();
-
+app.MapControllers();
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Universities}/{action=Index}/{id?}");
+    pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();
