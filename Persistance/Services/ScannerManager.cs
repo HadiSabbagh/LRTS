@@ -26,7 +26,7 @@ namespace Persistance.Services
         public async Task<User?> getUserInformationByCardId(string cardId)
         {
             
-            User user = await _context.Users.Where(x => x.CardId == cardId).FirstAsync();
+            User user = await _context.Users.Where(x => x.CardId == cardId).FirstOrDefaultAsync();
             if (user == null)
             {
                 return null;
