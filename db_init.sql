@@ -1,5 +1,0 @@
-CREATE USER admin;
-CREATE DATABASE lrts-db;
-GRANT ALL PRIVILEGES ON DATABASE lrts-db TO admin;
-ALTER USER postgres with PASSWORD ‘lrts1230’;
-ALTER USER admin with PASSWORD ‘lrts1230’;
