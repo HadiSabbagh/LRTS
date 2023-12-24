@@ -27,9 +27,10 @@ namespace Domain.Entities
         [EnumDataType(typeof(UserStatus))]
         public UserStatus PreviousUserStatus { get; set; }
 
-        public required string CardId { get; set; } = null!; 
+        public required string CardId { get; set; } = null!;
+        public required string StudentNumber { get; set; } = null!;
 
-        public User( string name, int universityId, int? reservationId, bool hasAccess, UserType userType, UserStatus currentUserStatus, UserStatus previousUserStatus, string cardId)
+        public User( string name, int universityId, int? reservationId, bool hasAccess, UserType userType, UserStatus currentUserStatus, UserStatus previousUserStatus, string cardId, string studentNumber )
         {
             Name = name;
             UniversityId = universityId;
@@ -40,6 +41,7 @@ namespace Domain.Entities
             PreviousUserStatus = previousUserStatus;
             CardId = cardId;
             PenaltyScore = 0;
+            StudentNumber = studentNumber;
         }
     }
 }

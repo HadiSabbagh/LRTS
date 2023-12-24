@@ -29,6 +29,8 @@ namespace Persistance.Services
         public async Task<Reservation> createReservation(int userId, int deskId, DateTime startDate, DateTime endDate)
         {
             Reservation reservation = new Reservation(userId, deskId, startDate, endDate, ReservationStatus.IS_ACTIVE);
+            var user = _context.Users.Find(reservation.UserId);
+            user.Reservation = reservation;
             await _context.Reservations.AddAsync(reservation);
             await _context.SaveChangesAsync();
             return reservation;

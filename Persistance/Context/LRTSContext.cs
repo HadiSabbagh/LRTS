@@ -62,6 +62,7 @@ namespace Persistance.Context
                 
             });
             modelBuilder.Entity<User>().HasIndex(user => user.CardId).HasName("IX_Users_CardId");
+            modelBuilder.Entity<User>().HasIndex(user => user.StudentNumber).HasName("IX_Users_StudentNumber");
 
             modelBuilder.Entity<University>(entity =>
             {
