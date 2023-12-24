@@ -14,6 +14,7 @@ builder.Services.AddScoped<UniversitiesRepository>();
 builder.Services.AddScoped<LibrariesRepository>();
 builder.Services.AddScoped<DesksRepository>();
 builder.Services.AddScoped<UsersRepository>();
+builder.Services.AddScoped<ReservationsRepository>();
 builder.Services.AddScoped<ReservationManager>();
 builder.Services.AddScoped<ScannerManager>();
 builder.Services.AddCors();

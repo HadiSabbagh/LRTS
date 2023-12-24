@@ -14,6 +14,9 @@ namespace Domain.Entities
 
         public University? University { get; set; }
 
+        public int LibraryId { get; set; }
+        public Library? Library { get; set; }
+
         public int FloorId { get; set; }
 
         public Floor? Floor { get; set; }

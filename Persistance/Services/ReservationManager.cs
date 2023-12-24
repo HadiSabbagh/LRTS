@@ -29,6 +29,7 @@ namespace Persistance.Services
         public async Task<Reservation> createReservation(int userId, int deskId, DateTime startDate, DateTime endDate)
         {
             Reservation reservation = new Reservation(userId, deskId, startDate, endDate, ReservationStatus.IS_ACTIVE);
+            await _context.Reservations.AddAsync(reservation);
             await _context.SaveChangesAsync();
             return reservation;
         }
@@ -164,8 +165,6 @@ namespace Persistance.Services
         {
             if (user != null)
             {
-
-
                 if (user.CurrentUserStatus == UserStatus.OUTSIDE || user.CurrentUserStatus == UserStatus.IN_BREAK)
                 {
                     user.PreviousUserStatus = user.CurrentUserStatus; // Save the previous status before updating the current status.
