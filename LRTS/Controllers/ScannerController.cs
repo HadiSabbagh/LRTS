@@ -30,8 +30,14 @@ namespace LRTS.Controllers
             {
                 return NotFound("No active reservation was found.");
             }
-            ReservationStatus rStatus = await _reservationManager.updateReservation(reservation);
-            return Ok(rStatus.ToString());
+            
+            await _reservationManager.updateUserStatus(user, reservation);
+            await _reservationManager.updateReservation(reservation);
+            return Ok(
+                "\nCurrent User Status: " + user.CurrentUserStatus +
+                "\nPrevious User Status: " + user.PreviousUserStatus +
+                "\nReservation Status:" + reservation.ReservationStatus + 
+                "\nRemaining Break Time:" + reservation.RemainingBreakTimeInMinutes);
         }
 
     }

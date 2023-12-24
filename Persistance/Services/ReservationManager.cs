@@ -41,9 +41,7 @@ namespace Persistance.Services
             {
                 await updateDeskStatus(desk, DeskStatus.EMPTY);
                 await updateReservationStatus(reservation, reservationStatus);
-                await updateUserStatus(user, UserStatus.OUTSIDE, UserStatus.OUTSIDE);
-                user.CurrentUserStatus = UserStatus.OUTSIDE;
-                user.PreviousUserStatus = UserStatus.OUTSIDE;
+                await updateUserStatus(user, reservation);
             }
 
         }
@@ -65,32 +63,29 @@ namespace Persistance.Services
             {
 
                 if (now > startTime
-                    && checkCurrentUserStatus(user, UserStatus.OUTSIDE)
-                    && checkPreviousUserStatus(user, UserStatus.OUTSIDE))
+                    && checkPreviousUserStatus(user, UserStatus.OUTSIDE)
+                    && checkCurrentUserStatus(user, UserStatus.OUTSIDE))
                 {
                     // cancel reservation
                     await cancelReservation(reservation, ReservationStatus.CANCELED);
                 }
-                if (now <= startTime
+                else if (now <= startTime
                     && checkPreviousUserStatus(user, UserStatus.OUTSIDE)
                     && checkCurrentUserStatus(user, UserStatus.IN_LIBRARY))
                 {
                     // begin reservation
                     await updateDeskStatus(desk, DeskStatus.OCCUPIED);
                     await updateReservationStatus(reservation, ReservationStatus.IN_PROGRESS);
-                    await updateUserStatus(user, UserStatus.OUTSIDE, UserStatus.IN_LIBRARY);
                 }
-                if (now < endTime
-                    && checkCurrentUserStatus(user, UserStatus.OUTSIDE)
+                else if (now < endTime
                     && checkPreviousUserStatus(user, UserStatus.IN_LIBRARY)
-                    && now > startTime)
+                    && checkCurrentUserStatus(user, UserStatus.IN_BREAK)
+                    )
                 {
                     // check break conditions
                     if (reservation.RemainingBreakTimeInMinutes > 0)
                     {
                         reservation.StartBreak = DateTime.Now;
-                        reservation.EndBreak = reservation.StartBreak.Value.AddMinutes(reservation.RemainingBreakTimeInMinutes);
-                        await updateUserStatus(user, UserStatus.IN_LIBRARY, UserStatus.IN_BREAK);
                     }
                     else //remaining break time is done, cancel reservation
                     {
@@ -98,14 +93,15 @@ namespace Persistance.Services
 
                     }
                 }
-                if (now < endTime
-                    && checkCurrentUserStatus(user, UserStatus.IN_LIBRARY)
-                    && checkPreviousUserStatus(user, UserStatus.IN_BREAK))
+                else if (now < endTime
+                    && checkPreviousUserStatus(user, UserStatus.IN_BREAK)
+                    && checkCurrentUserStatus(user, UserStatus.IN_LIBRARY))
                 {
                     //user returned
-                    reservation.RemainingBreakTimeInMinutes = (reservation.EndBreak - reservation.StartBreak).Value.Minutes;
+                    reservation.EndBreak = DateTime.Now;
+                    reservation.RemainingBreakTimeInMinutes -= (reservation.EndBreak - reservation.StartBreak).Value.Minutes;
                 }
-                if (now >= reservation.EndBreak)
+                else if (now >= reservation.EndBreak)
                 {
                     await cancelReservation(reservation, ReservationStatus.CANCELED);
                 }
@@ -164,19 +160,49 @@ namespace Persistance.Services
 
         }
 
-        public async Task updateUserStatus(User user, UserStatus previousUserStatus, UserStatus currentUserStatus)
+        public async Task updateUserStatus(User user, Reservation reservation)
         {
             if (user != null)
             {
-                user.PreviousUserStatus = previousUserStatus;
-                user.CurrentUserStatus = currentUserStatus;
+
+
+                if (user.CurrentUserStatus == UserStatus.OUTSIDE || user.CurrentUserStatus == UserStatus.IN_BREAK)
+                {
+                    user.PreviousUserStatus = user.CurrentUserStatus; // Save the previous status before updating the current status.
+                    user.CurrentUserStatus = UserStatus.IN_LIBRARY;
+                }
+                else if (user.CurrentUserStatus == UserStatus.IN_LIBRARY)
+                {
+
+                    if (reservation == null)
+                    {
+                        user.PreviousUserStatus = UserStatus.OUTSIDE;
+                        user.CurrentUserStatus = UserStatus.OUTSIDE;
+                    }
+                    else
+                    {
+                        if (reservation.ReservationStatus == ReservationStatus.IN_PROGRESS)
+                        {
+                            user.PreviousUserStatus = user.CurrentUserStatus;
+                            if (reservation.RemainingBreakTimeInMinutes > 0)
+                            {
+                                user.CurrentUserStatus = UserStatus.IN_BREAK;
+                            }
+                        }
+                        else
+                        {
+                            user.PreviousUserStatus = UserStatus.OUTSIDE;
+                            user.CurrentUserStatus = UserStatus.OUTSIDE;
+                        }
+                    }
+                }
             }
             await _context.SaveChangesAsync();
         }
 
         public async Task<Reservation?> getReservationByUserId(int userId)
         {
-            Reservation reservation =  await _context.Reservations.FirstOrDefaultAsync(x => x.UserId == userId && (x.ReservationStatus == ReservationStatus.IS_ACTIVE
+            Reservation reservation = await _context.Reservations.FirstOrDefaultAsync(x => x.UserId == userId && (x.ReservationStatus == ReservationStatus.IS_ACTIVE
             || x.ReservationStatus == ReservationStatus.IN_PROGRESS));
             return reservation;
         }

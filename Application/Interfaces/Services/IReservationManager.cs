@@ -18,7 +18,7 @@ namespace Application.Interfaces.Services
 
         public Task updateDeskStatus(Desk desk, DeskStatus deskStatus);
         public Task updateReservationStatus(Reservation reservation, ReservationStatus reservationStatus);
-        public Task updateUserStatus(User user, UserStatus previousUserStatus, UserStatus currentUserStatus);
+        public Task updateUserStatus(User user, Reservation reservation);
 
         public Task<Reservation?> getReservationByUserId(int userId);
 
