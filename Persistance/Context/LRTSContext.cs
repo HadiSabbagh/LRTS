@@ -58,7 +58,10 @@ namespace Persistance.Context
                 entity.Property(user => user.PreviousUserStatus).HasConversion(
                    pus => pus.ToString(),
                    pus => (UserStatus)Enum.Parse(typeof(UserStatus), pus));
+
+                
             });
+            modelBuilder.Entity<User>().HasIndex(user => user.CardId).HasName("IX_Users_CardId");
 
             modelBuilder.Entity<University>(entity =>
             {

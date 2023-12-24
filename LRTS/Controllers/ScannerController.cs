@@ -15,17 +15,17 @@ namespace LRTS.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CardScanned(int userId)
+        public async Task<IActionResult> CardScanned(string cardId)
         {
 
-            User user = await _scanner.getUserInformation(userId);
+            User user = await _scanner.getUserInformationByCardId(cardId);
             if (user == null)
             {
                 return NotFound("User was not found");
             }
             
             
-            Reservation reservation = await _reservationManager.getReservationByUserId(userId);
+            Reservation reservation = await _reservationManager.getReservationByUserId(user.Id);
             if(reservation == null)
             {
                 return NotFound("No active reservation was found.");

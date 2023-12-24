@@ -197,6 +197,11 @@ namespace Persistance.Services
                     }
                 }
             }
+            if (DateTime.Now > reservation.EndDateTime)
+            {
+                user.PreviousUserStatus = UserStatus.OUTSIDE;
+                user.CurrentUserStatus = UserStatus.OUTSIDE;
+            }
             await _context.SaveChangesAsync();
         }
 
